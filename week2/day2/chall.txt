@@ -1,0 +1,32 @@
+
+Q1. The output of the following statement:
+
+    SELECT COUNT(*) 
+    FROM FirstTab AS ft 
+    WHERE ft.id NOT IN (SELECT id FROM SecondTab WHERE id IS NULL)
+
+    OUTPUT: 0
+
+Q2. The output of the following statement:
+
+    SELECT COUNT(*) 
+    FROM FirstTab AS ft 
+    WHERE ft.id NOT IN (SELECT id FROM SecondTab WHERE id = 5)
+
+    OUTPUT: 2
+
+Q3. The output of the following statement:
+
+    SELECT COUNT(*) 
+    FROM FirstTab AS ft 
+    WHERE ft.id NOT IN (SELECT id FROM SecondTab)
+
+    OUTPUT: 0
+
+Q4. The output of the following statement:
+
+    SELECT COUNT(*) 
+    FROM FirstTab AS ft 
+    WHERE ft.id NOT IN (SELECT id FROM SecondTab WHERE id IS NOT NULL)
+
+    OUTPUT: 2
