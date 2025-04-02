@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coloring Squares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .color-picker {
+            margin-bottom: 20px;
+        }
+
+        .color-picker button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 50%;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-template-rows: repeat(10, 40px);
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .grid-item {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Coloring Squares</h1>
+    
+    <div class="color-picker">
+        <button class="color" style="background-color: red;"></button>
+        <button class="color" style="background-color: green;"></button>
+        <button class="color" style="background-color: blue;"></button>
+        <button class="color" style="background-color: yellow;"></button>
+        <button class="color" style="background-color: black;"></button>
+    </div>
+    
+    <div class="grid-container" id="grid-container"></div>
+
+    <script>
+        const gridContainer = document.getElementById('grid-container');
+        const colors = document.querySelectorAll('.color');
+        let selectedColor = 'black'; // Default color
+
+        // Create a 10x10 grid of squares
+        for (let i = 0; i < 100; i++) {
+            const gridItem = document.createElement('div');
+            gridItem.classList.add('grid-item');
+            gridItem.addEventListener('mousedown', colorSquare);
+            gridItem.addEventListener('mouseover', colorSquareOnDrag);
+            gridContainer.appendChild(gridItem);
+        }
+
+        // Set the color when a user selects a color
+        colors.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedColor = button.style.backgroundColor;
+            });
+        });
+
+        let isMouseDown = false;
+
+        // Handle mouse down event (for coloring)
+        function colorSquare(e) {
+            if (isMouseDown) {
+                e.target.style.backgroundColor = selectedColor;
+            }
+        }
+
+        // Handle mouse over event (for coloring while dragging)
+        function colorSquareOnDrag(e) {
+            if (isMouseDown) {
+                e.target.style.backgroundColor = selectedColor;
+            }
+        }
+
+        // Track mouse down and up for dragging
+        document.addEventListener('mousedown', () => {
+            isMouseDown = true;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
+    </script>
+
+</body>
+</html>
