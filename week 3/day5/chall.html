@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        #taskInput {
+            padding: 10px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        #submitBtn {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .listTasks {
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .task-text {
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+
+        .done-task {
+            text-decoration: line-through;
+            color: red;
+        }
+
+        .delete-btn {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .checkbox {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>To-Do List</h1>
+
+    <div class="form-container">
+        <input type="text" id="taskInput" placeholder="Enter task">
+        <button id="submitBtn">Submit</button>
+    </div>
+
+    <div class="listTasks"></div>
+
+    <script>
+        const tasks = [];
+        const taskInput = document.getElementById('taskInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const listTasks = document.querySelector('.listTasks');
+
+        let taskId = 0;
+
+        submitBtn.addEventListener('click', addTask);
+
+        function addTask() {
+            const taskText = taskInput.value.trim();
+
+            if (taskText !== '') {
+                const newTask = {
+                    task_id: taskId++,
+                    text: taskText,
+                    done: false
+                };
+
+                tasks.push(newTask);
+                renderTasks();
+                taskInput.value = ''; // Clear the input field
+            }
+        }
+
+        function renderTasks() {
+            listTasks.innerHTML = ''; // Clear the list before re-rendering
+
+            tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.classList.add('task-item');
+                taskElement.setAttribute('data-task-id', task.task_id);
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.classList.add('checkbox');
+                checkbox.checked = task.done;
+                checkbox.addEventListener('click', () => doneTask(task.task_id));
+
+                const taskText = document.createElement('label');
+                taskText.classList.add('task-text');
+                taskText.textContent = task.text;
+                if (task.done) {
+                    taskText.classList.add('done-task');
+                }
+
+                const deleteBtn = document.createElement('i');
+                deleteBtn.classList.add('fas', 'fa-times', 'delete-btn');
+                deleteBtn.addEventListener('click', () => deleteTask(task.task_id));
+
+                taskElement.appendChild(checkbox);
+                taskElement.appendChild(taskText);
+                taskElement.appendChild(deleteBtn);
+
+                listTasks.appendChild(taskElement);
+            });
+        }
+
+        function doneTask(taskId) {
+            const task = tasks.find(t => t.task_id === taskId);
+            if (task) {
+                task.done = !task.done;
+                renderTasks(); // Re-render tasks
+            }
+        }
+
+        function deleteTask(taskId) {
+            const taskIndex = tasks.findIndex(t => t.task_id === taskId);
+            if (taskIndex !== -1) {
+                tasks.splice(taskIndex, 1); // Remove task from the array
+                renderTasks(); // Re-render tasks
+            }
+        }
+    </script>
+
+</body>
+</html>
