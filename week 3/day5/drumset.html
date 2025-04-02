@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soundboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 20px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            border: 2px solid #333;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .key-instructions {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Soundboard</h1>
+    <div class="button-container">
+        <div class="button" data-key="A">A</div>
+        <div class="button" data-key="S">S</div>
+        <div class="button" data-key="D">D</div>
+        <div class="button" data-key="F">F</div>
+    </div>
+
+    <div class="key-instructions">
+        <p>Click the buttons or press the keys: A, S, D, F to play sounds!</p>
+    </div>
+
+    <audio id="audio-A" src="sounds/a-sound.mp3"></audio>
+    <audio id="audio-S" src="sounds/s-sound.mp3"></audio>
+    <audio id="audio-D" src="sounds/d-sound.mp3"></audio>
+    <audio id="audio-F" src="sounds/f-sound.mp3"></audio>
+
+    <script>
+        // Get all the buttons and attach event listeners
+        const buttons = document.querySelectorAll('.button');
+        
+        // Function to play sound based on key
+        function playSound(key) {
+            const audio = document.getElementById('audio-' + key);
+            if (audio) {
+                audio.currentTime = 0; // Reset to start for replay
+                audio.play();
+            }
+        }
+
+        // Add event listeners for buttons
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const key = this.getAttribute('data-key');
+                playSound(key);
+            });
+        });
+
+        // Add event listener for key press
+        document.addEventListener('keydown', function(e) {
+            const keyMap = {
+                'a': 'A',
+                's': 'S',
+                'd': 'D',
+                'f': 'F'
+            };
+            
+            const key = e.key.toLowerCase();
+            if (keyMap[key]) {
+                playSound(keyMap[key]);
+            }
+        });
+    </script>
+
+</body>
+</html>
