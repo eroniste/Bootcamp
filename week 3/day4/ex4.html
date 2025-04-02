@@ -1,0 +1,51 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <title>Volume of a Sphere</title> 
+        <style>  
+            body {
+                padding-top: 30px;
+                font-family: Arial, sans-serif;
+            } 
+            label, input {
+                display: block;
+                margin: 10px 0;
+            }  
+            input[type="text"] {
+                width: 200px;
+                padding: 8px;
+            }
+            input[type="submit"] {
+                padding: 8px 16px;
+                cursor: pointer;
+            }
+        </style> 
+    </head> 
+    <body> 
+        <p>Input radius value and get the volume of a sphere.</p> 
+        <form id="MyForm"> 
+            <label for="radius">Radius</label>
+            <input type="text" name="radius" id="radius" required> 
+            <label for="volume">Volume</label>
+            <input type="text" name="volume" id="volume" readonly> 
+            <input type="submit" value="Calculate" id="submit">    
+        </form> 
+
+        <script>
+            document.getElementById("MyForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                let radius = document.getElementById("radius").value;
+
+                if (radius === "" || isNaN(radius) || radius <= 0) {
+                    alert("Please enter a valid positive number for radius.");
+                    return;
+                }
+
+                let volume = (4/3) * Math.PI * Math.pow(radius, 3);
+                document.getElementById("volume").value = volume.toFixed(2); // Display volume rounded to 2 decimals
+            });
+        </script>
+    </body> 
+</html>
