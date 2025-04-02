@@ -5,7 +5,7 @@ DB_USER = "your_username"
 DB_PASSWORD = "your_password"
 DB_HOST = "localhost"
 DB_PORT = "5432"
-
+# I have issues with Pgadmin 4 regarding the password so i couldn't retrieve the details for the above
 def get_connection():
     return psycopg2.connect(
         dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT
