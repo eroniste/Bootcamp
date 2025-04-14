@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quote Generator</title>
+</head>
+<body>
+  <section id="quoteSection"></section>
+  <button id="generateQuoteButton">Generate Quote</button>
+  <form id="quoteForm">
+    <input type="text" id="quoteInput" placeholder="Quote">
+    <input type="text" id="authorInput" placeholder="Author">
+    <button type="submit">Add Quote</button>
+  </form>
+  <div id="quoteStatsButtons">
+    <button id="charCountWithSpaces">Character Count (With Spaces)</button>
+    <button id="charCountWithoutSpaces">Character Count (Without Spaces)</button>
+    <button id="wordCount">Word Count</button>
+    <button id="likeQuote">Like</button>
+  </div>
+  <form id="filterForm">
+    <input type="text" id="authorFilterInput" placeholder="Filter by Author">
+    <button type="submit">Filter</button>
+  </form>
+  <div id="navigationButtons">
+    <button id="prevQuote">Previous</button>
+    <button id="nextQuote">Next</button>
+  </div>
+
+  <script>
+    const quotesArray = [
+      { id: 0, author: "Albert Einstein", quote: "Life is like riding a bicycle. To keep your balance, you must keep moving.", likes: 0 },
+      { id: 1, author: "Isaac Newton", quote: "If I have seen further it is by standing on the shoulders of Giants.", likes: 0 },
+      { id: 2, author: "Mark Twain", quote: "The secret of getting ahead is getting started.", likes: 0 },
+    ];
+    
+    let lastQuoteId = -1;
+    let filteredQuotes = [];
+    let filteredIndex = 0;
+    
+    const quoteSection = document.getElementById("quoteSection");
+    const generateQuoteButton = document.getElementById("generateQuoteButton");
+    const quoteForm = document.getElementById("quoteForm");
+    const quoteInput = document.getElementById("quoteInput");
+    const authorInput = document.getElementById("authorInput");
+    const charCountWithSpaces = document.getElementById("charCountWithSpaces");
+    const charCountWithoutSpaces = document.getElementById("charCountWithoutSpaces");
+    const wordCount = document.getElementById("wordCount");
+    const likeQuote = document.getElementById("likeQuote");
+    const filterForm = document.getElementById("filterForm");
+    const authorFilterInput = document.getElementById("authorFilterInput");
+    const prevQuote = document.getElementById("prevQuote");
+    const nextQuote = document.getElementById("nextQuote");
+
+    function displayQuote(quote) {
+      quoteSection.textContent = `${quote.quote} - ${quote.author}`;
+    }
+
+    function generateRandomQuote() {
+      let randomQuote;
+      do {
+        randomQuote = quotesArray[Math.floor(Math.random() * quotesArray.length)];
+      } while (randomQuote.id === lastQuoteId);
+      lastQuoteId = randomQuote.id;
+      displayQuote(randomQuote);
+    }
+
+    generateQuoteButton.addEventListener("click", generateRandomQuote);
+
+    quoteForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const newQuote = {
+        id: quotesArray.length,
+        author: authorInput.value,
+        quote: quoteInput.value,
+        likes: 0,
+      };
+      quotesArray.push(newQuote);
+      quoteInput.value = "";
+      authorInput.value = "";
+    });
+
+    charCountWithSpaces.addEventListener("click", function () {
+      alert(quoteSection.textContent.length);
+    });
+
+    charCountWithoutSpaces.addEventListener("click", function () {
+      alert(quoteSection.textContent.replace(/\s/g, "").length);
+    });
+
+    wordCount.addEventListener("click", function () {
+      alert(quoteSection.textContent.split(" ").length);
+    });
+
+    likeQuote.addEventListener("click", function () {
+      const currentQuoteText = quoteSection.textContent.split(" - ")[0];
+      const currentQuote = quotesArray.find(quote => quote.quote === currentQuoteText);
+      if (currentQuote) {
+        currentQuote.likes++;
+        alert(`Likes: ${currentQuote.likes}`);
+      }
+    });
+
+    filterForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const authorFilter = authorFilterInput.value.toLowerCase();
+      filteredQuotes = quotesArray.filter(quote => quote.author.toLowerCase().includes(authorFilter));
+      filteredIndex = 0;
+      if (filteredQuotes.length > 0) {
+        displayQuote(filteredQuotes[filteredIndex]);
+        prevQuote.style.display = "inline";
+        nextQuote.style.display = "inline";
+      } else {
+        quoteSection.textContent = "No quotes found for that author.";
+        prevQuote.style.display = "none";
+        nextQuote.style.display = "none";
+      }
+    });
+
+    prevQuote.addEventListener("click", function () {
+      if (filteredIndex > 0) {
+        filteredIndex--;
+        displayQuote(filteredQuotes[filteredIndex]);
+      }
+    });
+
+    nextQuote.addEventListener("click", function () {
+      if (filteredIndex < filteredQuotes.length - 1) {
+        filteredIndex++;
+        displayQuote(filteredQuotes[filteredIndex]);
+      }
+    });
+  </script>
+</body>
+</html>

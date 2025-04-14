@@ -1,5 +1,5 @@
-function displayStudentInfo({first, last}) {
-    return `Your full name is ${first} ${last}`;
-}
+const users = { user1: 18273, user2: 92833, user3: 90315 };
+const usersArray = Object.entries(users);
 
-console.log(displayStudentInfo({first: 'Elie', last:'Schoppik'}));
+console.log(usersArray);
+// Output: [ [ 'user1', 18273 ], [ 'user2', 92833 ], [ 'user3', 90315 ] ]
