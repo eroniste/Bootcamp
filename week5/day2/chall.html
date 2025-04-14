@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Giphy Fetch</title>
+</head>
+<body>
+  <form id="gifForm">
+    <input type="text" id="category" placeholder="Enter category" required>
+    <button type="submit">Get Random Gif</button>
+  </form>
+  <button id="deleteAll">DELETE ALL</button>
+  <div id="gifContainer"></div>
+
+  <script>
+    const form = document.getElementById('gifForm');
+    const categoryInput = document.getElementById('category');
+    const gifContainer = document.getElementById('gifContainer');
+    const deleteAllBtn = document.getElementById('deleteAll');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const category = categoryInput.value.trim();
+      if (!category) return;
+      const url = `https://api.giphy.com/v1/gifs/random?api_key=hpvZycW22qCjn5cRM1xtWB8NKq4dQ2My&tag=${category}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Fetch error');
+        const data = await response.json();
+        const gifUrl = data.data.images.original.url;
+
+        const gifWrapper = document.createElement('div');
+        const img = document.createElement('img');
+        const deleteBtn = document.createElement('button');
+
+        img.src = gifUrl;
+        deleteBtn.textContent = 'DELETE';
+
+        deleteBtn.addEventListener('click', () => gifWrapper.remove());
+
+        gifWrapper.appendChild(img);
+        gifWrapper.appendChild(deleteBtn);
+        gifContainer.appendChild(gifWrapper);
+
+        categoryInput.value = '';
+      } catch (error) {
+        console.error('Error fetching gif:', error);
+      }
+    });
+
+    deleteAllBtn.addEventListener('click', () => {
+      gifContainer.innerHTML = '';
+    });
+  </script>
+</body>
+</html>
