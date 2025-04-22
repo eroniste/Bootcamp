@@ -1,0 +1,8 @@
+{
+  "name": "daily-challenge",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "chalk": "^5.0.0"
+  }
+}
